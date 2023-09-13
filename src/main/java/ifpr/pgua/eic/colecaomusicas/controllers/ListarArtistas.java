@@ -34,6 +34,17 @@ public class ListarArtistas implements Initializable{
         App.popScreen();
     }
 
+    @FXML
+    private void editar()
+    {
+        Artista selecionado = lstArtistas.getSelectionModel().getSelectedItem();
+
+        if(selecionado != null)
+        {
+            App.pushScreen("CADASTROARTISTA", o->new CadastroArtista(repositorio, selecionado));
+        }
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         lstArtistas.getItems().clear();

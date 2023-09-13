@@ -40,4 +40,20 @@ public class RepositorioArtistas {
         return dao.listar();
     }
 
+    public Resultado atualizarArtista(int id, String nome, String contato) 
+    {
+        if(nome.isEmpty() || nome.isBlank()){
+            return Resultado.erro("Nome inválido!");
+        }
+
+        if(contato.isBlank() || contato.isEmpty()){
+            return Resultado.erro("Contato inválido!");
+        }
+
+        Artista artista = new Artista(nome, contato);
+
+        return dao.atualizar(id, artista);
+
+    }
+
 }

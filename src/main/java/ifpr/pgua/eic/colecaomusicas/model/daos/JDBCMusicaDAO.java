@@ -173,9 +173,34 @@ public class JDBCMusicaDAO implements MusicaDAO{
     }
 
     @Override
-    public Resultado atualizar(int id, Musica nova) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+    public Resultado atualizar(int id, Musica novo) 
+    {
+        try(Connection con=fabrica.getConnection())
+        {
+            PreparedStatement pstm = con.prepareStatement("UPDATE musicas SET nome=?,duracao=?,anoLancamento=? WHERE id=?");
+
+            pstm.setString(1, novo.getNome());
+            pstm.setInt(2, novo.getDuracao());
+            pstm.setInt(3, novo.getAnoLancamento());
+            pstm.setInt(4, id);
+
+            int ret = pstm.executeUpdate();
+
+            if(ret == 1)
+            {
+                novo.setId(id);
+
+                return Resultado.sucesso("Musica atualizada!!!", novo);
+            }
+
+            return Resultado.erro("Vixe...");
+        }
+
+
+        catch (SQLException e) 
+        {
+            return Resultado.erro(e.getMessage());
+        }    
     }
 
     @Override

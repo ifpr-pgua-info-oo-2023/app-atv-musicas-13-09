@@ -26,20 +26,20 @@ public class RepositorioMusicas {
         this.generoDAO = generoDAO;
     }
 
-    public Resultado cadastrarMusica(String nome, int duracao, int anoLancamento, Artista artista, Genero genero) {
+    public Resultado cadastrarMusica(String nome, String sDuracao, String sAnoLancamento) {
         if (nome.isBlank() || nome.isEmpty()) {
             return Resultado.erro("Nome inválido!");
         }
 
-        if (duracao < 0) {
+        if (sDuracao < 0) {
             return Resultado.erro("Duração inválida!");
         }
 
-        if (anoLancamento < 0 || anoLancamento > LocalDate.now().getYear()) {
+        if (sAnoLancamento < 0 || sAnoLancamento > LocalDate.now().getYear()) {
             return Resultado.erro("Ano de Lançamento inválido!");
         }
 
-        Musica musica = new Musica(nome, anoLancamento, duracao, artista, genero);
+        Musica musica = new Musica(nome, sAnoLancamento, sDuracao);
 
         return dao.criar(musica);
 
@@ -113,6 +113,30 @@ public class RepositorioMusicas {
             }
         }
         return r0;
+    }
+
+    public Resultado atualizarMusica(int id, String nome, String sDuracao, String sAnoLancamento) 
+    {
+        if(nome.isEmpty() || nome.isBlank()){
+            return Resultado.erro("Nome inválido!");
+        }
+
+        if(sDuracao.isBlank() || sDuracao.isEmpty()){
+            return Resultado.erro("Duração inválida!");
+        }
+
+        if(sAnoLancamento.isEmpty() || sAnoLancamento.isBlank()){
+            return Resultado.erro("Ano de lançamento inválido!");
+        }
+
+        Musica musica = new Musica(nome, sDuracao, sAnoLancamento);
+
+        return dao.atualizar(id, musica);
+
+    }
+
+    public Resultado cadastrarMusica(String nome, int duracao, int ano) {
+        return null;
     }
 
 }

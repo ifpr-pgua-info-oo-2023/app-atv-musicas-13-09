@@ -19,6 +19,7 @@
             <TableColumn fx:id="tbcGenero" prefWidth="75.0" text="Genero" />
         </columns>
       </TableView>
+      <Button mnemonicParsing="false" onAction="#editar" text="Editar" />
       <Button mnemonicParsing="false" onAction="#voltar" text="Voltar" />
    </children>
    <padding>

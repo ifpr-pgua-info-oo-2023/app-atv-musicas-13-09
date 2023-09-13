@@ -9,6 +9,7 @@ import com.github.hugoperlin.results.Resultado;
 import ifpr.pgua.eic.colecaomusicas.App;
 import ifpr.pgua.eic.colecaomusicas.model.entities.Artista;
 import ifpr.pgua.eic.colecaomusicas.model.entities.Genero;
+import ifpr.pgua.eic.colecaomusicas.model.entities.Musica;
 import ifpr.pgua.eic.colecaomusicas.model.repositories.RepositorioArtistas;
 import ifpr.pgua.eic.colecaomusicas.model.repositories.RepositorioGeneros;
 import ifpr.pgua.eic.colecaomusicas.model.repositories.RepositorioMusicas;
@@ -44,21 +45,41 @@ public class CadastroMusica implements Initializable{
     private RepositorioArtistas repositorioArtistas;
     private RepositorioGeneros repositorioGeneros;
 
+    private Musica antigo = null;
+
     public CadastroMusica(RepositorioMusicas repositorio, RepositorioGeneros repositorioGeneros, RepositorioArtistas repositorioArtistas){
         this.repositorio = repositorio;
         this.repositorioArtistas = repositorioArtistas;
         this.repositorioGeneros = repositorioGeneros;
     }
 
+    public CadastroMusica(RepositorioMusicas repositorio2, Musica selecionado) 
+    {
+        this.repositorio = repositorio2;
+        this.antigo = selecionado;
+    }
+
     @FXML
     void cadastrar(ActionEvent event) {
         String nome = tfNome.getText();
-        String sDuracao = tfDuracao.getText();
+        int sDuracao = tfDuracao.getValue();
         String sAnoLancamento = tfAnoLancamento.getText();
         Artista artista = cbArtista.getValue();
         Genero genero = cbGenero.getValue();
 
         String msg="";
+
+        Resultado resultado = null;
+
+        if(antigo == null)
+        {
+            resultado = repositorio.cadastrarMusica(nome, sDuracao, sAnoLancamento);
+        }
+
+        else
+        {
+            resultado = repositorio.atualizarMusica(antigo.getId(), nome, sDuracao, sAnoLancamento);
+        }
 
         int duracao=0;
         try{
@@ -74,7 +95,7 @@ public class CadastroMusica implements Initializable{
             msg = "Ano inválido!";
         }
 
-        Resultado rs = repositorio.cadastrarMusica(nome, duracao, ano, artista, genero);
+        Resultado rs = repositorio.cadastrarMusica(nome, duracao, ano);
 
         Alert alert;
         msg = rs.getMsg();
@@ -116,8 +137,6 @@ public class CadastroMusica implements Initializable{
             Alert alert = new Alert(AlertType.ERROR,r2.getMsg());
             alert.showAndWait();
         }
-
-
     }
 
     

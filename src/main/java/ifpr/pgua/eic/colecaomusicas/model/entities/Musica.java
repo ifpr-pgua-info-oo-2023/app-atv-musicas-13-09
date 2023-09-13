@@ -28,6 +28,9 @@ public class Musica {
         this.genero = genero;
     }
 
+    public Musica(String nome2, String sDuracao, String sAnoLancamento) {
+    }
+
     public int getId() {
         return id;
     }
